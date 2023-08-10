@@ -113,8 +113,18 @@ resource "google_clouddeploy_target" "target" {
   location = var.gcp_region
   name     = "${var.service_name}-${each.value.name}"
 
-  run {
-    location = each.value.target_id
+  dynamic "gke" {
+    for_each = var.runtime == "gke" ? [1] : []
+    content {
+      cluster = each.value.target_id
+    }
+  }
+
+  dynamic "run" {
+    for_each = var.runtime == "run" ? [1] : []
+    content {
+      location = each.value.target_id
+    }
   }
 
   execution_configs {

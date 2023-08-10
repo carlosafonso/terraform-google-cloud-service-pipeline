@@ -21,7 +21,7 @@ variable "service_name" {
 
 variable "runtime" {
   type        = string
-  description = "The runtime of this service (GKE or Cloud Run). Only Cloud Run is supported at this time, so this variable is in fact ignored."
+  description = "The runtime of this service (GKE or Cloud Run)."
 
   validation {
     condition     = contains(["gke", "run"], var.runtime)
@@ -56,5 +56,5 @@ variable "stages" {
     target_id         = string,
     requires_approval = bool,
   }))
-  description = "The sequence of stages that the pipeline will follow. These must be defined in your desired order."
+  description = "The sequence of stages that the pipeline will follow. These must be defined in your desired order. The `target_id` attribute specifies the ID of the target environment: for GKE, this is the cluster ID (projects/<PROJECT>/locations/<LOCATION>/clusters/<CLUSTER>); for Cloud Run, this is the location where the service should reside (projects/<PROJECT>/locations/<LOCATION>)."
 }
